@@ -1,12 +1,14 @@
 "use client";
 
 import Particles from "@/components/core/particles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import WelcomeStep from "@/components/onboarding/steps/welcome-step";
 import UsernameStep from "@/components/onboarding/steps/username-step";
 import ConfirmationStep from "@/components/onboarding/steps/confirmation-step";
 import FinishingStep from "@/components/onboarding/steps/finishing-step";
+import { useUserState } from "@/zustand/user-state";
+import { useRouter } from "next/navigation";
 
 type OnboardingStep = "welcome" | "username" | "confirmation" | "finishing";
 
@@ -33,6 +35,15 @@ export default function Home() {
       continue: () => {},
     },
   };
+
+  const state = useUserState();
+  const nav = useRouter();
+
+  useEffect(() => {
+    if (state.DisplayName !== "") {
+      nav.push("/home");
+    }
+  }, [username]);
 
   return (
     <div className="font-sans min-h-screen flex items-center justify-center relative">

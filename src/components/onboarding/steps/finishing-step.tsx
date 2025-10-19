@@ -1,6 +1,13 @@
-import React from "react";
+import { useUserState } from "@/zustand/user-state";
+import React, { useEffect } from "react";
 
 export default function FinishingStep({ username }: { username: string }) {
+  const state = useUserState();
+
+  useEffect(() => {
+    state.setDisplayName(username);
+  }, [username]);
+
   return (
     <div className="w-full min-w-[500px] mx-auto p-8 bg-black/40 backdrop-blur-xl rounded-md shadow-2xl border border-white/5">
       <div className="text-center space-y-6">
@@ -16,9 +23,9 @@ export default function FinishingStep({ username }: { username: string }) {
 
         <div className="space-y-3">
           <h2 className="text-3xl font-bold text-white">
-            All Set, {username}!
+            Welcome to Erbium, {username}!
           </h2>
-          <p className="text-lg text-white/60">Setting up...</p>
+          <p className="text-lg text-white/60">Preparing...</p>
         </div>
 
         <div className="flex justify-center">
@@ -29,11 +36,11 @@ export default function FinishingStep({ username }: { username: string }) {
             ></div>
             <div
               className="w-3 h-3 bg-white rounded-full animate-bounce"
-              style={{ animationDelay: "150ms" }}
+              style={{ animationDelay: "100ms" }}
             ></div>
             <div
               className="w-3 h-3 bg-white rounded-full animate-bounce"
-              style={{ animationDelay: "300ms" }}
+              style={{ animationDelay: "250ms" }}
             ></div>
           </div>
         </div>
