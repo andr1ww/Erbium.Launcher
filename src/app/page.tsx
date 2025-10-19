@@ -9,6 +9,7 @@ import ConfirmationStep from "@/components/onboarding/steps/confirmation-step";
 import FinishingStep from "@/components/onboarding/steps/finishing-step";
 import { useUserState } from "@/zustand/user-state";
 import { useRouter } from "next/navigation";
+import Sidebar from "@/components/core/sidebar";
 
 type OnboardingStep = "welcome" | "username" | "confirmation" | "finishing";
 
