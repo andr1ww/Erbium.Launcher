@@ -138,7 +138,7 @@ export default function Sidebar({ page }: { page: { page: string } }) {
           <div className="flex justify-center">
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="bg-gray-800 p-1.5 rounded-full shadow-md hover:bg-gray-700 transition-all flex items-center space-x-1 border border-gray-700"
+              className="bg-gray-800/30 p-1.5 rounded-full shadow-md hover:bg-gray-700 transition-all flex items-center space-x-1 border border-gray-700/50"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
