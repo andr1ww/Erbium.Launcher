@@ -1,23 +1,33 @@
 {
-  "$schema": "https://schema.tauri.app/config/2.0.0-rc",
-  "productName": "Erbium.Launcher",
-  "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Erbium",
+  "version": "1.0.0",
+  "identifier": "erbium",
   "build": {
-    "frontendDist": "../out",
-    "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "beforeDevCommand": "bun run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "bun run build",
+    "frontendDist": "../dist"
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["erbium"]
+      }
+    }
   },
   "app": {
     "windows": [
       {
         "title": "Erbium Launcher",
         "width": 1100,
-        "height": 650,
-        "resizable": false,
+        "height": 640,
+        "minWidth": 900,
+        "minHeight": 590,
+        "resizable": true,
         "decorations": false,
         "fullscreen": false,
+        "center": true,
         "transparent": true
       }
     ],
@@ -28,12 +38,6 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.icns",
-      "icons/icon.ico"
-    ]
+    "icon": ["icons/icon.png", "icons/icon.ico"]
   }
 }
