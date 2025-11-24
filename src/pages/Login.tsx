@@ -1,18 +1,11 @@
 import React, { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-
-// Icons
-import { MdLogin } from "react-icons/md";
-
-// Components
+import { AnimatePresence } from "framer-motion";
 import GetStarted from "@/components/OnBoarding/GetStarted";
 import UserName from "@/components/OnBoarding/Username";
 import ConfirmName from "@/components/OnBoarding/ConfirmName";
 import Terms from "@/components/OnBoarding/Terms";
 import Finishing from "@/components/OnBoarding/Finishing";
 import { useNavigate } from "react-router-dom";
-
-// Zustand
 import { useOnBoardingStore } from "@/zustand/OnBoardingStore";
 import { useUserStore } from "@/zustand/UserStore";
 
