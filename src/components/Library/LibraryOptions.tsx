@@ -5,6 +5,7 @@ import { FiPlus } from "react-icons/fi";
 import { RiDownload2Line } from "react-icons/ri";
 import { BsFillGrid1X2Fill } from "react-icons/bs";
 import { List } from "lucide-react";
+import { open } from "@tauri-apps/plugin-shell";
 
 // Zustand
 import { useLibraryStore } from "@/zustand/LibraryStore";
@@ -20,7 +21,14 @@ const LibraryOptions: React.FC = () => {
           Import Build
         </button>
 
-        <button className="py-1.25 px-1.75 flex items-center text-sm gap-1 text-gray-300 rounded-md cursor-pointer transition-all bg-gradient-to-br from-slate-600/8 via-black-400/8 to-slate-600/8 border border-white/10 hover:brightness-120">
+        <button
+          onClick={async () => {
+            await open(
+              "https://github.com/llamaqwerty/fortnite-builds-archive?tab=readme-ov-file#online-testing-download-links-start-here"
+            );
+          }}
+          className="py-1.25 px-1.75 flex items-center text-sm gap-1 text-gray-300 rounded-md cursor-pointer transition-all bg-gradient-to-br from-slate-600/8 via-black-400/8 to-slate-600/8 border border-white/10 hover:brightness-120"
+        >
           <RiDownload2Line className="w-5 h-5" />
           Download Builds
         </button>
