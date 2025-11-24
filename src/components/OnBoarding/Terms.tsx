@@ -42,108 +42,35 @@ const Terms: React.FC = () => {
 
       <div className="mt-4 max-h-65 bg-gradient-to-br from-slate-600/10 via-black-400/10 to-slate-600/10 backdrop-blur-sm border border-gray-600/30 rounded-lg p-4 mb-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-4 text-sm text-gray-200/90">
-          <div className="overflow-y-auto">
-            <h3 className="font-bold text-white mb-3">Community Rules</h3>
+          <h3 className="font-bold text-white mb-3">Erbium Rules</h3>
 
-            <div className="space-y-2">
-              <div>
-                <span className="font-medium text-white">Be Respectful:</span> No discrimination,
-                hate speech, or threats. Including Racism, Homophobia, etc. This also includes GIF'S
-                and other materials.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">Guild Tags:</span> No inappropriate guild
-                tags. This includes abbreviated slurs as well as inappropriate words and politics,
-                or illegal material.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">No NSFW Content:</span> No explicit
-                material or adult content. This also includes GIF'S and other materials.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">English Only:</span> This is an English
-                Speaking server, please try to talk in English.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">No Spam or Drama:</span> Keep conversations
-                relevant and respectful.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">No Trading/Selling:</span> Do not trade or
-                sell accounts of any kind doesn't matter what it is.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">No Harmful Software or Doxing:</span> Don't
-                share viruses or personal information. This includes DM'S.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">
-                  No Impersonation or Unapproved Pings:
-                </span>{" "}
-                Don't pretend to be staff or ping them without reason.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">No Ads or Political/Illegal Content:</span>{" "}
-                No promotions, politics, or illegal material. This includes DM'S.
-              </div>
-
-              <div>
-                <span className="font-medium text-white">Follow Discord's Terms of Service:</span>{" "}
-                <a
-                  href="https://discord.com/terms"
-                  className="text-gray-400 hover:text-gray-300 underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Terms
-                </a>{" "}
-                /{" "}
-                <a
-                  href="https://discord.com/guidelines"
-                  className="text-gray-400 hover:text-gray-300 underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Guidelines
-                </a>
-              </div>
-            </div>
-
+          <div className="space-y-2">
             <div>
-              <h3 className="font-bold text-white my-3">In-Game Rules</h3>
-
-              <div className="space-y-2">
-                <div>
-                  <span className="font-medium text-white">No Cheating:</span> Cheating on Solaris
-                  is prohibited aswell as Screen sharing cheats on other servers or in other games
-                  will result in a one-day timeout. Repeated offenses will lead to a permanent ban
-                  from both the Solaris server and the game.
-                </div>
-
-                <div>
-                  <span className="font-medium text-white">No Stream Sniping:</span> Don't use live
-                  streams for unfair advantages.
-                </div>
-
-                <div>
-                  <span className="font-medium text-white">No Ban Evading:</span> Don't use
-                  alternate accounts to bypass bans.
-                </div>
-
-                <div>
-                  <span className="font-medium text-white">No False Reporting:</span> Please do not
-                  false report players if you are not certain they're cheating as this can get you
-                  banned.
-                </div>
-              </div>
+              <span className="font-medium text-white">No racism or homophobic comments:</span> This
+              will result in a permanent ban.
+            </div>
+            <div>
+              <span className="font-medium text-white">
+                No spamming or pinging staff for no reason:
+              </span>{" "}
+              Will result in a temporary mute, only ping a staff if required.
+            </div>
+            <div>
+              <span className="font-medium text-white">No drama:</span> Do not start drama in this
+              server. If you do, it will result in a mute.
+            </div>
+            <div>
+              <span className="font-medium text-white">No Doxxing or NSFW Content:</span> This
+              includes sending people NSFW in DMs or sexual comments about a minor. This will result
+              in a permanent ban.
+            </div>
+            <div>
+              <span className="font-medium text-white">Follow Discord ToS:</span> Don't ban evade &
+              follow ToS (this includes being at least 13 years old).
+            </div>
+            <div>
+              <span className="font-medium text-white">Punishments may vary:</span> Any punishments
+              can be different than stated, adjusted, or issued at staff discretion.
             </div>
           </div>
         </div>
