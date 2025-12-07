@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // Zustand
 import { useLaunchTabStore } from "@/zustand/LaunchTabStore";
+import GlassContainer from "../Global/GlassContainer";
 
 const LaunchTab: React.FC = () => {
   const { PostIndex, incrementPostIndex } = useLaunchTabStore();
@@ -17,7 +18,7 @@ const LaunchTab: React.FC = () => {
   ];
 
   return (
-    <div className="relative w-full transition-all flex-2 bg-gradient-to-br from-slate-600/8 via-black-400/8 to-slate-600/8 backdrop-blur-lg border border-white/25 rounded-lg overflow-hidden shadow-lg 2xl:h-88 h-63">
+    <GlassContainer className="relative w-full transition-all flex-2 rounded-lg overflow-hidden 2xl:h-88 h-63">
       <AnimatePresence>
         <motion.img
           key={PostIndex}
@@ -35,7 +36,7 @@ const LaunchTab: React.FC = () => {
         />
       </AnimatePresence>
 
-      <div className="absolute bottom-0 py-3 px-4 left-0 w-full flex justify-start items-center max-h-26 min-h-20 bg-[#09080a]/90">
+      <GlassContainer className="absolute bottom-0 py-3 px-4 left-0 w-full flex justify-start items-center max-h-26 min-h-20 bg-black/60">
         <div className="flex flex-col w-full">
           <AnimatePresence mode="wait">
             <motion.h3
@@ -91,8 +92,8 @@ const LaunchTab: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </GlassContainer>
+    </GlassContainer>
   );
 };
 

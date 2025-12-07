@@ -42,11 +42,11 @@ const BuildCard: React.FC<{
           <span className="text-white/30 text-sm">No Splash</span>
         </div>
       )}
-      <div className="absolute bottom-0 left-0 bg-gradient-to-t px-1.5 py-1.25 from-black/68 to-black/2 w-full h-full opacity-0 group-hover:opacity-100 transition-all ease duration-300 flex flex-col justify-end items-start">
-        <span className="text-white/80 text-sm leading-3 translate-y-10 group-hover:translate-y-0 transition-all duration-350 delay-45">
+      <div className="absolute bottom-0 left-0 bg-gradient-to-t px-1.5 py-1.25 from-black/68 to-black/2 w-full h-full group-hover:opacity-100 transition-all ease duration-300 flex flex-col justify-end items-start">
+        <span className="text-white/80 text-sm leading-3 group-hover:translate-y-0 transition-all duration-350 delay-45">
           Fortnite {build.version}
         </span>
-        <span className="text-white/35 font-light text-xs translate-y-10 group-hover:translate-y-0 transition-all duration-350 delay-25">
+        <span className="text-white/35 font-light text-xs group-hover:translate-y-0 transition-all duration-350 delay-25">
           {build.real}
         </span>
         <div className="absolute right-0 bottom-0 px-1.5 py-2.25 flex flex-col gap-1.5">

@@ -1,12 +1,16 @@
 import { LibraryBig } from "lucide-react";
 import React, { useState } from "react";
 import { Blurhash } from "react-blurhash";
+import GlassContainer from "../Global/GlassContainer";
 
 const RecentlyPlayed: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="flex-1 bg-gradient-to-br from-slate-600/8 via-black-400/8 to-slate-600/8 p-3 border-white/25 rounded-lg w-full max-w-xl text-left shadow-lg backdrop-blur-sm border relative overflow-hidden">
+    <GlassContainer
+      variant="grayish"
+      className="flex-1 p-3 rounded-lg w-full max-w-xl text-left relative overflow-hidden"
+    >
       <h2 className="text-white 2xl:text-xl text-base font-semibold mb-2 relative text-center">
         Recently Played Builds
         <span>
@@ -46,7 +50,7 @@ const RecentlyPlayed: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </GlassContainer>
   );
 };
 
