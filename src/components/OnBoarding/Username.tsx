@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { MdWavingHand } from "react-icons/md";
 import GlassContainer from "@/components/Global/GlassContainer";

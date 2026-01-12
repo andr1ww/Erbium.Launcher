@@ -10,7 +10,9 @@ pub fn run() {
       tauri::generate_handler![
         commands::builds::search_for_version,
         commands::builds::check_file_exists_and_size,
-        commands::builds::check_file_exists
+        commands::builds::check_file_exists,
+        commands::game::launch_game,
+        commands::game::close_game
       ]
     )
     .run(tauri::generate_context!())

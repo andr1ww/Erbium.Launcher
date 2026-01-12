@@ -33,7 +33,8 @@ struct RpcClient {
 #[tauri::command]
 fn start_rpc(config: RpcConfig, state: State<RwLock<RpcClient>>) -> Result<(), String> {
   let mut rpc_client = state.write().map_err(|e| e.to_string())?;
-  let mut client = DiscordIpcClient::new(&config.client_id);
+  let mut client = DiscordIpcClient::new(&config.client_id)
+    .map_err(|e| e.to_string())?;
   client.connect().map_err(|e| e.to_string())?;
 
   let mut activity = Activity::new().details(&config.details);
@@ -95,7 +96,9 @@ fn main() {
         start_rpc,
         commands::builds::search_for_version,
         commands::builds::check_file_exists_and_size,
-        commands::builds::check_file_exists
+        commands::builds::check_file_exists,
+        commands::game::launch_game,
+        commands::game::close_game 
       ]
     )
     .run(tauri::generate_context!())
