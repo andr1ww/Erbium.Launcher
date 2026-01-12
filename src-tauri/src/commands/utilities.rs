@@ -101,7 +101,6 @@ pub fn resume_process_threads(pid: u32) -> Result<(), String> {
         }
 
         CloseHandle(snapshot);
-        println!("Resumed {} threads for PID {}", resumed_count, pid);
         Ok(())
     }
 }
@@ -167,7 +166,7 @@ pub fn inject_dll(pid: u32, dll_path: &str) -> Result<(), String> {
         );
         if h_process.is_null() {
             return Err(format!(
-                "Failed to open process (PID: {}). WinError: {}",
+                "Failed to open process (PID: {}). Error: {}",
                 pid,
                 std::io::Error::last_os_error()
             ));
@@ -243,7 +242,6 @@ pub fn inject_dll(pid: u32, dll_path: &str) -> Result<(), String> {
 }
 
 pub fn test_process_ready(pid: u32) -> bool {
-    println!("[test_process_ready] Testing PID: {}", pid);
     unsafe {
         let h_process = OpenProcess(
             PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE,
@@ -252,12 +250,9 @@ pub fn test_process_ready(pid: u32) -> bool {
         );
         
         if h_process.is_null() {
-            println!("[test_process_ready] ERROR: Failed to open process");
             return false;
         }
-        println!("[test_process_ready] Process handle opened successfully");
 
-        println!("[test_process_ready] Attempting test allocation (4KB)...");
         let test_memory = VirtualAllocEx(
             h_process,
             std::ptr::null_mut(),
@@ -267,17 +262,12 @@ pub fn test_process_ready(pid: u32) -> bool {
         );
 
         if test_memory.is_null() {
-            println!("[test_process_ready] Test allocation FAILED - process not ready");
             CloseHandle(h_process);
             return false;
         }
 
-        println!("[test_process_ready] Test allocation SUCCEEDED at address: {:?}", test_memory);
-
         use winapi::um::memoryapi::VirtualFreeEx;
-        let free_result = VirtualFreeEx(h_process, test_memory, 0, MEM_RELEASE);
-        println!("[test_process_ready] Test memory freed (result: {})", free_result);
-        
+        VirtualFreeEx(h_process, test_memory, 0, MEM_RELEASE);
         CloseHandle(h_process);
         true
     }

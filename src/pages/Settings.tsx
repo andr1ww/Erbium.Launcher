@@ -257,7 +257,7 @@ const Settings: React.FC = () => {
             } disabled:bg-blue-800 disabled:cursor-not-allowed`}
         >
             {saveStatus === "saving" && "Saving..."}
-            {saveStatus === "saved" && "✓ Saved!"}
+            {saveStatus === "saved" && "Saved!"}
             {saveStatus === "idle" && "Save Credentials"}
         </button>
     </div>

@@ -68,7 +68,7 @@ const BuildCard: React.FC<{
             onClick={() => onPlayGS(path)}
             disabled={isLaunching}
             className="text-green-400/55 p-1.25 rounded-sm border cursor-pointer border-green-400/25 hover:text-green-400/80 hover:border-green-400/50 translate-x-8 group-hover:translate-x-0 transition-all duration-350 delay-50 bg-black/20 hover:bg-black/30 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Launch Game Server"
+            title="gameserver"
           >
             <IoPlay className="w-3.5 h-3.5" />
           </button>
@@ -120,7 +120,7 @@ const BuildsGrid: React.FC = () => {
 
     const extraDlls = clientDLL || "";
 
-    console.log("=== CLIENT LAUNCH ===");
+    console.log("client launch");
     console.log("clientDLL:", clientDLL);
     console.log("extraDlls:", extraDlls);
     console.log("injectExtraDlls:", extraDlls !== "");
@@ -155,12 +155,12 @@ const handlePlayGS = async (buildPath: string) => {
   }
 
   if (!gameServerDLL) {
-    alert("Please configure the Game Server DLL in Settings first");
+    alert("Please configure the GameServer DLL in Settings first");
     return;
   }
 
   if (!gsEmail || !gsPassword) {
-    alert("Please configure Game Server credentials in Settings first");
+    alert("Please configure GameServer credentials in Settings first");
     return;
   }
 
@@ -177,7 +177,7 @@ const handlePlayGS = async (buildPath: string) => {
     
     const extraDlls = gameServerDLL;
 
-    console.log("=== GAME SERVER LAUNCH ===");
+    console.log("gs mode");
     console.log("gameServerDLL:", gameServerDLL);
     console.log("extraDlls:", extraDlls);
     console.log("injectExtraDlls:", extraDlls !== "");
