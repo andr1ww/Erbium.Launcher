@@ -3,11 +3,11 @@ import { Blurhash } from "react-blurhash";
 import removeMarkdown from "remove-markdown";
 
 // Tauri
-import { openUrl } from "@tauri-apps/plugin-opener";
+//import { openUrl } from "@tauri-apps/plugin-opener";
 
 // Icons
 import { FaNewspaper } from "react-icons/fa";
-import GlassContainer from "../Global/GlassContainer";
+//import GlassContainer from "../Global/GlassContainer";
 
 const News: React.FC = () => {
   const [Scrolled, setScrolled] = useState(false);

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { RiDownload2Line } from "react-icons/ri";
-import { BsFillGrid1X2Fill } from "react-icons/bs";
-import { List } from "lucide-react";
+//import { BsFillGrid1X2Fill } from "react-icons/bs";
+//import { List } from "lucide-react";
 import { open } from "@tauri-apps/plugin-shell";
 import ImportBuildModal from "./ImportBuildModal";
 import GlassContainer from "../Global/GlassContainer";

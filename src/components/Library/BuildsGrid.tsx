@@ -3,14 +3,20 @@ import { motion } from "framer-motion";
 import { Blurhash } from "react-blurhash";
 import { IoPlay } from "react-icons/io5";
 import { MdDeleteForever } from "react-icons/md";
+import { invoke } from "@tauri-apps/api/core";
+import { join } from "@tauri-apps/api/path";
 import BuildStore, { IBuild } from "@/zustand/BuildStore";
+import { useGameSettingsStore } from "@/zustand/GameSettingsStore";
+import { useUserStore } from "@/zustand/UserStore";
 
 const BuildCard: React.FC<{
   path: string;
   build: IBuild;
   onDelete: (path: string) => void;
   onPlay: (path: string) => void;
-}> = ({ path, build, onDelete, onPlay }) => {
+  onPlayGS: (path: string) => void;
+  isLaunching: boolean;
+}> = ({ path, build, onDelete, onPlay, onPlayGS, isLaunching }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const hasSplash = build.splash && build.splash !== "no splash";
 
@@ -52,13 +58,25 @@ const BuildCard: React.FC<{
         <div className="absolute right-0 bottom-0 px-1.5 py-2.25 flex flex-col gap-1.5">
           <button
             onClick={() => onPlay(path)}
-            className="text-white/55 p-1.25 rounded-sm border cursor-pointer border-white/25 hover:text-white/80 hover:border-white/50 translate-x-8 group-hover:translate-x-0 transition-all duration-350 delay-25 bg-black/20 hover:bg-black/30 backdrop-blur-md"
+            disabled={isLaunching}
+            className="text-white/55 p-1.25 rounded-sm border cursor-pointer border-white/25 hover:text-white/80 hover:border-white/50 translate-x-8 group-hover:translate-x-0 transition-all duration-350 delay-25 bg-black/20 hover:bg-black/30 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Launch Client"
+          >
+            <IoPlay className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => onPlayGS(path)}
+            disabled={isLaunching}
+            className="text-green-400/55 p-1.25 rounded-sm border cursor-pointer border-green-400/25 hover:text-green-400/80 hover:border-green-400/50 translate-x-8 group-hover:translate-x-0 transition-all duration-350 delay-50 bg-black/20 hover:bg-black/30 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed"
+            title="gameserver"
           >
             <IoPlay className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => onDelete(path)}
-            className="text-white/55 p-1.25 rounded-sm border cursor-pointer border-white/25 hover:text-white/80 hover:border-white/50 translate-x-8 group-hover:translate-x-0 transition-all duration-350 delay-25 bg-black/20 hover:bg-black/30 backdrop-blur-md"
+            disabled={isLaunching}
+            className="text-white/55 p-1.25 rounded-sm border cursor-pointer border-white/25 hover:text-white/80 hover:border-white/50 translate-x-8 group-hover:translate-x-0 transition-all duration-350 delay-75 bg-black/20 hover:bg-black/30 backdrop-blur-md disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Delete Build"
           >
             <MdDeleteForever className="w-3.5 h-3.5" />
           </button>
@@ -70,9 +88,123 @@ const BuildCard: React.FC<{
 
 const BuildsGrid: React.FC = () => {
   const { builds, remove } = BuildStore();
+  const { redirectDLL, clientDLL, gameServerDLL, backend, gsEmail, gsPassword } = useGameSettingsStore();
+  const { DisplayName } = useUserStore();
+  const [isLaunching, setIsLaunching] = useState(false);
   const buildsArray = Array.from(builds.entries());
+  
+  const email = `${DisplayName}@erbium.dev`;
+  const password = "erbiumerbium";
 
-  const handlePlay = (path: string) => console.log("Playing:", path);
+  const handlePlay = async (buildPath: string) => {
+  if (!redirectDLL) {
+    alert("Please configure the Redirect DLL in Settings first");
+    return;
+  }
+
+  if (!email || !password || !DisplayName) {
+    alert("Please set your display name in settings first");
+    return;
+  }
+
+  setIsLaunching(true);
+
+  try {
+    const executablePath = await join(
+      buildPath,
+      "FortniteGame",
+      "Binaries",
+      "Win64",
+      "FortniteClient-Win64-Shipping.exe"
+    );
+
+    const extraDlls = clientDLL || "";
+
+    console.log("client launch");
+    console.log("clientDLL:", clientDLL);
+    console.log("extraDlls:", extraDlls);
+    console.log("injectExtraDlls:", extraDlls !== "");
+
+    await invoke("launch_game", {
+      filePath: executablePath,
+      email: email,
+      password: password,
+      redirectLink: redirectDLL,
+      backend: backend || "",
+      useBackendParam: backend !== "",
+      injectExtraDlls: extraDlls !== "",
+      extraDllLinks: extraDlls,
+      useCustomPaks: false,
+      customPaksLinks: "",
+      isGameServer: false
+    });
+
+    console.log("Game launched successfully");
+  } catch (error) {
+    console.error("Failed to launch game:", error);
+    alert(`Failed to launch game: ${error}`);
+  } finally {
+    setIsLaunching(false);
+  }
+};
+
+const handlePlayGS = async (buildPath: string) => {
+  if (!redirectDLL) {
+    alert("Please configure the Redirect DLL in Settings first");
+    return;
+  }
+
+  if (!gameServerDLL) {
+    alert("Please configure the GameServer DLL in Settings first");
+    return;
+  }
+
+  if (!gsEmail || !gsPassword) {
+    alert("Please configure GameServer credentials in Settings first");
+    return;
+  }
+
+  setIsLaunching(true);
+
+  try {
+    const executablePath = await join(
+      buildPath,
+      "FortniteGame",
+      "Binaries",
+      "Win64",
+      "FortniteClient-Win64-Shipping.exe"
+    );
+    
+    const extraDlls = gameServerDLL;
+
+    console.log("gs mode");
+    console.log("gameServerDLL:", gameServerDLL);
+    console.log("extraDlls:", extraDlls);
+    console.log("injectExtraDlls:", extraDlls !== "");
+
+    await invoke("launch_game", {
+      filePath: executablePath,
+      email: gsEmail,
+      password: gsPassword,
+      redirectLink: redirectDLL,
+      backend: backend || "",
+      useBackendParam: backend !== "",
+      injectExtraDlls: extraDlls !== "",
+      extraDllLinks: extraDlls,
+      useCustomPaks: false,
+      customPaksLinks: "",
+      isGameServer: true
+    });
+
+    console.log("Game Server launched successfully");
+  } catch (error) {
+    console.error("Failed to launch game server:", error);
+    alert(`Failed to launch game server: ${error}`);
+  } finally {
+    setIsLaunching(false);
+  }
+};
+
   const handleDelete = (path: string) => remove(path);
 
   if (buildsArray.length === 0) {
@@ -105,6 +237,8 @@ const BuildsGrid: React.FC = () => {
             build={build}
             onDelete={handleDelete}
             onPlay={handlePlay}
+            onPlayGS={handlePlayGS}
+            isLaunching={isLaunching}
           />
         ))}
       </div>

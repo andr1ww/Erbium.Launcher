@@ -61,28 +61,27 @@ const ImportBuildModal: React.FC<ImportBuildModalProps> = ({ isOpen, onClose }) 
         3532353: { v: "1.0", r: "1.0-CL-3532353" },
       };
 
-      let foundMatch = false;
       for (const str of hexCheck) {
-        const match = str.match(/\+\+Fortnite\+Release-(\d+\.\d+|Cert)-CL-(\d+)/);
-        if (!match) continue;
-        if (!str.includes("Live") && !str.includes("Cert")) {
-          version =
-            match[1].length === 3 && match[1].split(".")[1].length === 1
-              ? match[1] + "0"
-              : match[1];
-          release = `${version}-CL-${match[2]}`;
-          foundMatch = true;
-          break;
-        } else {
-          const clNum = parseInt(match[2]);
-          if (versionMap[clNum]) {
-            version = versionMap[clNum].v;
-            release = versionMap[clNum].r;
-            foundMatch = true;
-            break;
-          }
-        }
-      }
+  const match = str.match(/\+\+Fortnite\+Release-(\d+\.\d+|Cert)-CL-(\d+)/);
+  if (!match) continue;
+
+  if (!str.includes("Live") && !str.includes("Cert")) {
+    version =
+      match[1].length === 3 && match[1].split(".")[1].length === 1
+        ? match[1] + "0"
+        : match[1];
+    release = `${version}-CL-${match[2]}`;
+    break;
+  } else {
+    const clNum = parseInt(match[2]);
+    if (versionMap[clNum]) {
+      version = versionMap[clNum].v;
+      release = versionMap[clNum].r;
+      break;
+    }
+  }
+}
+
 
       setBuildVersion(version);
       setBuildRelease(release);
