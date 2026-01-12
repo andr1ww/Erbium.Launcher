@@ -10,6 +10,7 @@ use tauri::State;
 use discord_rich_presence::{ activity::{ self, Activity }, DiscordIpc, DiscordIpcClient };
 
 pub mod commands;
+
 #[derive(Deserialize)]
 struct RpcConfig {
   client_id: String,
@@ -28,14 +29,20 @@ struct RpcConfig {
 
 struct RpcClient {
   client: Option<DiscordIpcClient>,
+  start_time: Option<i64>,
 }
 
+// discord rpc ig
 #[tauri::command]
 fn start_rpc(config: RpcConfig, state: State<RwLock<RpcClient>>) -> Result<(), String> {
   let mut rpc_client = state.write().map_err(|e| e.to_string())?;
-  let mut client = DiscordIpcClient::new(&config.client_id)
-    .map_err(|e| e.to_string())?;
-  client.connect().map_err(|e| e.to_string())?;
+  
+  if rpc_client.client.is_none() {
+    let mut client = DiscordIpcClient::new(&config.client_id)
+      .map_err(|e| e.to_string())?;
+    client.connect().map_err(|e| e.to_string())?;
+    rpc_client.client = Some(client);
+  }
 
   let mut activity = Activity::new().details(&config.details);
 
@@ -70,16 +77,51 @@ fn start_rpc(config: RpcConfig, state: State<RwLock<RpcClient>>) -> Result<(), S
   }
 
   if config.enable_timer {
-    let time_unix = SystemTime::now()
-      .duration_since(UNIX_EPOCH)
-      .map(|t| t.as_secs() as i64)
-      .unwrap_or(0);
+    let time_unix = if let Some(start) = rpc_client.start_time {
+      start
+    } else {
+      let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|t| t.as_secs() as i64)
+        .unwrap_or(0);
+      rpc_client.start_time = Some(now);
+      now
+    };
     activity = activity.timestamps(activity::Timestamps::new().start(time_unix));
+  } else {
+    rpc_client.start_time = None;
   }
 
-  client.set_activity(activity).map_err(|e| e.to_string())?;
-  rpc_client.client = Some(client);
+  if let Some(client) = &mut rpc_client.client {
+    client.set_activity(activity).map_err(|e| e.to_string())?;
+  }
 
+  Ok(())
+}
+
+#[tauri::command]
+fn stop_rpc(state: State<RwLock<RpcClient>>) -> Result<(), String> {
+  let mut rpc_client = state.write().map_err(|e| e.to_string())?;
+  
+  if let Some(mut client) = rpc_client.client.take() {
+    client.close().map_err(|e| e.to_string())?;
+  }
+  
+  rpc_client.start_time = None;
+  
+  Ok(())
+}
+
+#[tauri::command]
+fn clear_rpc(state: State<RwLock<RpcClient>>) -> Result<(), String> {
+  let mut rpc_client = state.write().map_err(|e| e.to_string())?;
+  
+  if let Some(client) = &mut rpc_client.client {
+    client.clear_activity().map_err(|e| e.to_string())?;
+  } else {
+    return Err("Discord RPC not initialized".to_string());
+  }
+  
   Ok(())
 }
 
@@ -90,10 +132,15 @@ fn main() {
     .plugin(tauri_plugin_deep_link::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_opener::init())
-    .manage(RwLock::new(RpcClient { client: None }))
+    .manage(RwLock::new(RpcClient { 
+      client: None,
+      start_time: None,
+    }))
     .invoke_handler(
       tauri::generate_handler![
         start_rpc,
+        stop_rpc,
+        clear_rpc,
         commands::builds::search_for_version,
         commands::builds::check_file_exists_and_size,
         commands::builds::check_file_exists,
